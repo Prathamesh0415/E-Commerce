@@ -1,6 +1,8 @@
 import express from 'express'
 import cors from 'cors'
 import 'dotenv/config'
+import connectDB from './config/connectDB.js'
+import connectCloudinary from './config/coudinary.js';
 
 const app = express();
 
@@ -15,4 +17,6 @@ app.get('/', (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`listening on port ${PORT}`);
+    connectDB(process.env.MONGODB_URI)
+    connectCloudinary()
 })
