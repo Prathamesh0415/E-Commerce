@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
         unique: true
     },
     password:{
-        type: password,
+        type: String,
         required: true
     },
     cartData:{
@@ -20,6 +20,6 @@ const userSchema = new mongoose.Schema({
     }
 }, {minimize: false})
 
-const userModel = mongoose.models.user || mongoose.model('user', userSchema)
+const userModel = mongoose.models.users || mongoose.model('user', userSchema)
 
 export default userModel
