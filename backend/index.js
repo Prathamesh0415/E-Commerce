@@ -4,6 +4,7 @@ import 'dotenv/config'
 import connectDB from './config/connectDB.js'
 import connectCloudinary from './config/coudinary.js';
 import userRouter from './routes/userRoute.js';
+import productRouter from './routes/productRoute.js'
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use(cors()); // access the backed from an ip
 
 app.use('/api/user', userRouter)
+app.use('/api/product', productRouter)
 
 app.get('/', (req, res) => {
     res.send('API WORKING');
