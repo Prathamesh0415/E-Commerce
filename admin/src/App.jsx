@@ -25,7 +25,7 @@ function App() {
       <>
         <Navbar setToken={setToken} />
         <hr />
-        <div className="glex w-full">
+        <div className="flex w-full">
           <Sidebar />
           <div className="w-[70%] mx-auto ml-[max(5vw,25px)]">
             <Routes>
