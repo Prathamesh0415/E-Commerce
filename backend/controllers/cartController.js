@@ -24,7 +24,7 @@ export const addToCart = async (req, res) => {
 
         
     }catch(error){
-        console.log(error)
+        console.log("error in cart controller" ,error)
         res.json({success: false, message: "Internal Server Error"})
     }
 }
@@ -41,7 +41,7 @@ export const updateCart = async (req, res) => {
         await userModel.findByIdAndUpdate(userId, {cartData})
         res.json({success: true, message: "Cart Updated Successfully"})
     }catch(error){
-        console.log(error)
+        console.log("Error in cart Controller", error)
         res.sjon({success: false, message: "InternalServer Error"})
     }
 }
@@ -56,7 +56,7 @@ export const getUserCart = async (req, res) => {
         res.josn({success: true, cartData})
 
     }catch(error){
-        console.log(error)
+        console.log("Error in cart controller", error)
         res.json({success: false, message: "Internal Server Error"})
     }
 }

@@ -39,6 +39,15 @@ const ShopContextProvider = (props) => {
         }
 
         setCartItems(cartData)
+
+        if(token){
+            try{
+                axios.post(backendUrl + "/api/cart/add", {itemId, size}, {headers: {token}})
+            }catch(error){
+                console.log("Error in shop context", error)
+                toast.error(error.message)
+            }
+        }
     }
 
     const getCartCount = () => {
@@ -70,12 +79,40 @@ const ShopContextProvider = (props) => {
     useEffect(() => {
         getProductsData()
     }, [])
+
+    useEffect(() => {
+        if(!token && localStorage.getItem('token')){
+            setToken(localStorage.getItem('token'))
+            getUserCart(localStorage.getItem('token'))
+        }
+    }, [])
     
 
-    const updateQuantity =  (itemId, size, quantity) => {
+    const updateQuantity = async (itemId, size, quantity) => {
         let cartData = structuredClone(cartItems)
         cartData[itemId][size] = quantity
         setCartItems(cartData)
+
+        if(token){
+            try{
+                await axios.post(backendUrl + "/api/cart/update", {itemId, size, quantity}, {headers: {token}})
+            }catch(error){
+                console.log("Error is shop context", error)
+                toast.error(error.message)
+            }
+        }
+    }
+
+    const getUserCart = async (token) => {
+        try{
+            const response = await axios.post(backendUrl + "/api/cart/get", {}, {headers: {token}})
+            if(response.data.success){
+                setCartItems(response.data.cartData)
+            }
+        }catch(error){
+            console.log("Error in shop context", error)
+            toast.error(error.message)
+        }
     }
 
     const getCartAmount = () => {
