@@ -39,7 +39,15 @@ export const placeOrderRazorPay = async (req, res) => {
 
 //All orders data for admin panel 
 export const allOrders = async (req, res) => {
+    try{
 
+        const orders = await orderModel.find({})
+        res.json({success: true, orders})
+
+    }catch(error){
+        console.log("Error in order controller", error)
+        res.json({success: false, message: "Internal Server Error"})
+    }
 }
 
 //User order data for frontend
@@ -56,5 +64,12 @@ export const userOrders = async (req, res) => {
 
 //update Status
 export const updateStatus = async (req, res) => {
-
+    try{
+        const { orderId, status } = req.body
+        await orderModel.findByIdAndUpdate(orderId, { status })
+        res.json({success: true, message: "Status Updated"})
+    }catch(error){
+        console.log("Error in order controller", error)
+        res.josn({success: false, message: " Internal Server Error" })
+    }
 }
