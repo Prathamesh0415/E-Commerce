@@ -9,6 +9,11 @@ const deliveryCharges = 10
 //gateway stripe
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
+// const razorpayInstance = new razorpay({
+//     key_id: process.env.RAZORPAY_KEY_ID,
+//     key_secret: process.env.RAZORPAY_KEY_SECRET
+// })
+
 //COD
 export const placeOrder = async (req, res) => {
     try{
