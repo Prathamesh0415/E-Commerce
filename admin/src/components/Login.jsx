@@ -16,7 +16,7 @@ function Login({setToken}) {
            if(response.data.success){
             setToken(response.data.token)
            }else{
-            toast(response.error.message)
+            toast(response.data.message)
            }
         }catch(error){
             console.log(error)

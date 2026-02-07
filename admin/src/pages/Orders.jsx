@@ -1,6 +1,6 @@
 import React from 'react'
 import { useEffect } from 'react'
-import { useState } from 'reacr'
+import { useState } from 'react'
 import { backendUrl, currency } from '../App'
 import { toast } from 'react-toastify'
 import { assets } from '../assets/assets'
