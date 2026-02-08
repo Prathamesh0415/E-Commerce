@@ -35,44 +35,34 @@ function Collection() {
   }
 
   const applyFilter = () => {
+  let productCopy = Array.isArray(products) ? [...products] : []
 
-    let productCopy = products.slice()
-
-    if(showSearch && search){
-      productCopy = productCopy.filter(item => item.name.toLowerCase().includes(search.toLowerCase()))
-    }
-
-    if(category.length > 0){
-      productCopy = productCopy.filter(item => category.includes(item.category))
-    }
-
-    if(subCategory.length > 0){
-      productCopy = productCopy.filter(item => subCategory.includes(item.subCategory))
-    }
-
-    setFilterProducts(productCopy)
-
+  if (showSearch && search) {
+    productCopy = productCopy.filter(item =>
+      item.name?.toLowerCase().includes(search.toLowerCase())
+    )
   }
+
+  if (category.length > 0) {
+    productCopy = productCopy.filter(item => category.includes(item.category))
+  }
+
+  if (subCategory.length > 0) {
+    productCopy = productCopy.filter(item => subCategory.includes(item.subCategory))
+  }
+
+  setFilterProducts(productCopy)
+}
+
 
   const sortProducts = () => {
-    
-    let filterProductsCopy = filterProducts.slice()
-
-    switch (sortType) {
-      case 'low-high':
-        setFilterProducts(filterProductsCopy.sort((a, b) => (a.price - b.price)))
-        break;
-      
-      case 'high-low':
-        setFilterProducts(filterProductsCopy.sort((a, b) => (b.price - a.price)))
-        break;
-
-      default: 
-          applyFilter()
-          break;
-    }
+  if (sortType === 'low-high') {
+    setFilterProducts(prev => [...prev].sort((a,b) => a.price - b.price))
+  } 
+  else if (sortType === 'high-low') {
+    setFilterProducts(prev => [...prev].sort((a,b) => b.price - a.price))
   }
-
+}
   useEffect(() => {
     applyFilter()
   }, [category, subCategory, search, showSearch, products])
