@@ -13,7 +13,15 @@ const app = express();
 const PORT = 3000 || process.env.PORT
 
 app.use(express.json());
-app.use(cors()); // access the backed from an ip
+
+app.use(cors({
+  origin: true, // reflects request origin
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true
+}));
+
+app.options("*", cors());
 
 app.use('/api/user', userRouter)
 app.use('/api/product', productRouter)
