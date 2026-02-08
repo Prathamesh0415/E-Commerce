@@ -14,7 +14,7 @@ const app = express();
 // FIX 2: Port Logic
 // Previous code: 3000 || process.env.PORT (Always resulted in 3000)
 // New code: Checks environment variable FIRST.
-const PORT = process.env.PORT || 4000
+const PORT = process.env.PORT || 3000
 
 app.use(express.json());
 
@@ -40,12 +40,12 @@ app.get('/', (req, res) => {
     res.send('API WORKING');
 })
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
     console.log(`listening on port ${PORT}`);
     // Ideally await these connections if they are async, 
     // but this works for standard startup.
-    connectDB(process.env.MONGODB_URI)
-    connectCloudinary()
+    await connectDB(process.env.MONGODB_URI)
+    await connectCloudinary()
 })
 
 // FIX 5: Export app for Vercel Serverless environment
