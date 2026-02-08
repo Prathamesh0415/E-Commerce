@@ -1,13 +1,20 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose"
 
-const connectDB = async (url) => {
-    await mongoose.connect(`${url}`)
-    .then(() => {
-        console.log('database connected successfully')
-    })
-    .catch((error) => {
-        console.log('error while connecting to database', error);
-    })
+let cached = global.mongoose
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null }
 }
 
-export default connectDB
+export default async function connectDB(url) {
+  if (cached.conn) return cached.conn
+
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(url, {
+      bufferCommands: false,
+    }).then(m => m)
+  }
+
+  cached.conn = await cached.promise
+  return cached.conn
+}
