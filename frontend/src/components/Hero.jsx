@@ -1,9 +1,8 @@
 import React from 'react'
-import {assets} from '../assets/assets'
+import { assets } from '../assets/assets'
 
 function Hero() {
   return (
-    <div>
       <div className='flex flex-col sm:flex-row border border-gray-400'>
         {/*Hero left side */}
         <div className='w-full sm:w-1/2 flex items-center justify-center py-10 sm:py-0'>
@@ -20,9 +19,9 @@ function Hero() {
           </div>
         </div>
         {/*Hero right side */}
-        <img className='w-full sm:w-1/2' src={assets.hero_img} />
+        {/* FIX 1: Added alt attribute for SEO and Accessibility */}
+        <img className='w-full sm:w-1/2' src={assets.hero_img} alt="Latest Arrivals Hero" />
       </div>
-    </div>
   )
 }
 

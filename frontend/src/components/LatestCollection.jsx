@@ -6,11 +6,13 @@ import ProductItem from './ProductItem'
 function LatestCollection() {
   
     const { products } = useContext(ShopContext)
-    const [ latestProducts, setLatestProducts] = useState([])
+    const [latestProducts, setLatestProducts] = useState([])
 
     useEffect(() => {
-        if (!products) return
-        setLatestProducts(products.slice(0, 10))
+        // FIX 1: Safety Check
+        // If products is undefined/null, default to empty array to prevent errors
+        const productList = products || [];
+        setLatestProducts(productList.slice(0, 10));
     }, [products])
 
     return (
@@ -21,12 +23,14 @@ function LatestCollection() {
                 Lorem Ipsum is simply dummy text of the printing and typesetting industry
             </p>
         </div>
-        {/*Renderring Products*/}
+        {/*Rendering Products*/}
         <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6'>
             {
-                latestProducts.map((item, index) => {
+                latestProducts.map((item) => {
+                    // FIX 2: Unique Key
+                    // Changed 'key={index}' to 'key={item._id}'
                     return (
-                        <ProductItem key={index} id={item._id} image={item.image} name={item.name} price={item.price} />
+                        <ProductItem key={item._id} id={item._id} image={item.image} name={item.name} price={item.price} />
                     )
                 })
             }
