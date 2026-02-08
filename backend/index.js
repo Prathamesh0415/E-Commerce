@@ -27,7 +27,7 @@ app.use(cors({
   // The frontend sends {headers: {token}}, so the backend MUST allow it explicitly.
   allowedHeaders: ["Content-Type", "Authorization", "token"],
   credentials: true
-}));
+})); 
 
 app.options("*", cors());
 
