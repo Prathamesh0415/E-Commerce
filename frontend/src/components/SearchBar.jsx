@@ -10,22 +10,40 @@ function SearchBar() {
     const [visible, setVisible] = useState(false)
     
     useEffect(() => {
-        if(location.pathname.includes('collection')){
+        // FIX 1: Pathname Check
+        // Ensures the search bar only appears on the Collection page
+        if(location.pathname.includes('/collection')){
             setVisible(true)
         }else{
             setVisible(false)
         }
     }, [location])
 
-    return showSearch && visible ?  (
+    // FIX 2: Early Return
+    // Cleaner code than wrapping the whole JSX in a ternary operator
+    if (!showSearch || !visible) return null;
+
+    return (
     <div className='border-t border-b bg-gray-50 text-center'>
         <div className='inline-flex items-center justify-center border border-gray-400 px-5 py-2 my-5 mx-3 rounded-full w-3/4 sm:w-1/2'>
-            <input value={search} onChange={(e) => setSearch(e.target.value)} className='flex-1 outline-none bg-inherit text-sm' type='text' placeholder='search' />
-            <img className='w-4' src={assets.search_icon} alt='' />
+            <input 
+                value={search} 
+                onChange={(e) => setSearch(e.target.value)} 
+                className='flex-1 outline-none bg-inherit text-sm' 
+                type='text' 
+                placeholder='Search products...' 
+            />
+            <img className='w-4' src={assets.search_icon} alt='search' />
         </div>
-        <img onClick={() => setShowSearch(false)} className='inline w-3 cursor-pointer' src={assets.cross_icon} />
+        {/* FIX 3: Added alt tag and margin for better click area */}
+        <img 
+            onClick={() => setShowSearch(false)} 
+            className='inline w-3 cursor-pointer mx-2' 
+            src={assets.cross_icon} 
+            alt='close search' 
+        />
     </div>
-  ) : null
+  )
 }
 
 export default SearchBar
