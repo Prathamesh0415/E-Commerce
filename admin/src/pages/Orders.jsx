@@ -36,7 +36,7 @@ function Orders({token}) {
     try{
       const response = await axios.post(backendUrl + '/api/order/status', {orderId, status: event.target.value}, {headers:{token}})
       if(response.data.success){
-        await fetchAllOrders()
+        await fetchAllOrders(token)
       }
     }catch(error){
       console.log(error)
