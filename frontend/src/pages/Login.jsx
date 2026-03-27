@@ -30,7 +30,7 @@ function Login() {
       //console.log(response)
       if(response.data.success){
         setToken(response)
-        
+        localStorage.setItem('token', response.data.token)
       }
     }
     }catch(error){
