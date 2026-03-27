@@ -2,22 +2,17 @@ import orderModel from "../models/orderModel.js"
 import userModel from "../models/userModel.js"
 import Stripe from "stripe"
 
-//global variables
 const currency = 'inr'
 const deliveryCharges = 10
 
-//gateway stripe
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
-// const razorpayInstance = new razorpay({
-//     key_id: process.env.RAZORPAY_KEY_ID,
-//     key_secret: process.env.RAZORPAY_KEY_SECRET
-// })
-
-//COD
 export const placeOrder = async (req, res) => {
     try{
-        const { userId, items, amount, address } = req.body
+        const {  userId, items, amount, address } = req.body
+       // console.log(req)
+       console.log(req.userId)
+        //const userId = req.userId
 
         const orderData = {
             userId,
@@ -33,6 +28,7 @@ export const placeOrder = async (req, res) => {
         await newOrder.save()
         
         await userModel.findByIdAndUpdate(userId, {cartData:{}})
+        res.json({success: true, message: "Order placed successfully"})
 
     }catch(error){
         console.log(error)
@@ -40,7 +36,6 @@ export const placeOrder = async (req, res) => {
     }
 }
 
-//Stripe
 export const placeOrderStripe = async (req, res) => {
     try{
         const { userId, items, amount, address } = req.body
@@ -50,7 +45,7 @@ export const placeOrderStripe = async (req, res) => {
             items,
             address,
             amount,
-            paymentMethod: "COD",
+            paymentMethod: "Stripe",
             payment: false,
             date: Date.now()
         }
@@ -61,7 +56,7 @@ export const placeOrderStripe = async (req, res) => {
         const line_items = items.map((item) => ({
             price_data: {
                 currency: currency,
-                product_Data: {
+                product_data: {
                     name: item.name
                 },
                 unit_amount: item.price * 100
@@ -72,7 +67,7 @@ export const placeOrderStripe = async (req, res) => {
         line_items.push({
             price_data: {
                 currency: currency,
-                product_Data: {
+                product_data: {
                     name: 'Delivery Charges'
                 },
                 unit_amount: deliveryCharges*100
@@ -95,12 +90,13 @@ export const placeOrderStripe = async (req, res) => {
     }
 }
 
-//Verify Payment stripe
 export const verifyStripe = async (req, res) => {
     try{
         const { orderId, success, userId } = req.body
-        await orderModel.findByIdAndUpdate(orderId, {payment: true})
-        await userModel.findByIdAndUpdate(userId, {cartData:{}})
+        if(success === "true"){
+            await orderModel.findByIdAndUpdate(orderId, {payment: true})
+            await userModel.findByIdAndUpdate(userId, {cartData:{}})
+        }
         res.json({success: true})
     }catch(error){
         console.log("Error in order controller", error)
@@ -108,29 +104,24 @@ export const verifyStripe = async (req, res) => {
     }
 }
 
-//RazorPay
 export const placeOrderRazorPay = async (req, res) => {
 
 }
 
-//All orders data for admin panel 
 export const allOrders = async (req, res) => {
     try{
-
         const orders = await orderModel.find({})
         res.json({success: true, orders})
-
     }catch(error){
         console.log("Error in order controller", error)
         res.json({success: false, message: "Internal Server Error"})
     }
 }
 
-//User order data for frontend
 export const userOrders = async (req, res) => {
     try{
         const { userId } = req.body
-        const orders = await orderModel.findById(userId)
+        const orders = await orderModel.find({ userId })
         res.json({success: true, orders})
     }catch(error){
         console.log(error, "error in order controller")
@@ -138,7 +129,6 @@ export const userOrders = async (req, res) => {
     }
 }
 
-//update Status
 export const updateStatus = async (req, res) => {
     try{
         const { orderId, status } = req.body
@@ -146,6 +136,6 @@ export const updateStatus = async (req, res) => {
         res.json({success: true, message: "Status Updated"})
     }catch(error){
         console.log("Error in order controller", error)
-        res.josn({success: false, message: " Internal Server Error" })
+        res.json({success: false, message: " Internal Server Error" })
     }
 }

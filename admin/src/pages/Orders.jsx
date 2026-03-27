@@ -45,7 +45,7 @@ function Orders({token}) {
   }
 
   useEffect(() => {
-    fetchAllOrders
+    fetchAllOrders(token)
   }, [token])
 
   return (
@@ -77,18 +77,18 @@ function Orders({token}) {
                 <p>{order.address.phone}</p>
             </div>
                 <div>
-                <p className='text-sm sm:text-[15px]'>Items : {order.item.length}</p>
+                <p className='text-sm sm:text-[15px]'>Items : {order.items.length}</p>
                 <p>Method : {order.paymentMethod}</p>
                 <p>Payment : {order.payment ? 'Done' : 'Pending'}</p>
                 <p>Date : {new Date(order.date).toDateString()}</p>
                 </div>
                 <p className='text-sm sm:text-[15px]'>{currency}{order.amount}</p>
                 <select onChange={(event) => statusUpdateHandler(event, order._id)} value={order.status} className='p-2 font-semibold'>
-                  <options value="Order Placed">Order Placed</options>
-                  <options value="Packing">Packing</options>
-                  <options value="Shipped">Shipped</options>
-                  <options value="Out For delivery">Out for delivery</options>
-                  <options value="Delivered">Delivered</options>
+                  <option value="Order Placed">Order Placed</option>
+                  <option value="Packing">Packing</option>
+                  <option value="Shipped">Shipped</option>
+                  <option value="Out For delivery">Out for delivery</option>
+                  <option value="Delivered">Delivered</option>
                 </select>
             </div>
           ))

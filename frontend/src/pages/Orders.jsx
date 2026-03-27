@@ -4,8 +4,7 @@ import { ShopContext } from "../context/ShopContext";
 import axios from "axios";
 
 function Orders() {
-  
-  // FIX 1: Added useState and useEffect to imports above
+
   const { currency, token, backendUrl } = useContext(ShopContext);
   const [ orderData, setOrderData ] = useState([])
 
